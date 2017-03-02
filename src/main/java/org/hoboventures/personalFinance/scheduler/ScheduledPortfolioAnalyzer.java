@@ -1,4 +1,4 @@
-package org.hoboventures.personalFinance;
+package org.hoboventures.personalFinance.scheduler;
 
 import com.barchart.ondemand.api.QuoteRequest;
 import org.hoboventures.personalFinance.service.GenericBarchartService;
