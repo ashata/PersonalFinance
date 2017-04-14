@@ -23,7 +23,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableScheduling
 //@EnableTransactionManagement
 //@EntityScan("org.hoboventures.org.hoboventures.personalFinance.domain")
-@EnableElasticsearchRepositories("org.hoboventures.org.hoboventures.personalFinance.dao")
+@EnableElasticsearchRepositories("org.hoboventures.personalFinance.dao")
 @ComponentScan({"org.hoboventures.personalFinance"})
 @EnableMetrics
 @EnableSwagger2

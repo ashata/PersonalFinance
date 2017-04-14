@@ -17,9 +17,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ScheduledPortfolioAnalyzer {
 
-    @Autowired private QuoteService quoteService;
     @Autowired private HistoryService historyService;
     @Autowired private LeaderService leaderService;
+    @Autowired private QuoteService quoteService;
 
     @Value("${interval_cron}")
     public String interval;

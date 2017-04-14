@@ -1,7 +1,5 @@
 package org.hoboventures.personalFinance.domain;
 
-import com.barchart.ondemand.api.responses.Leader;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -15,10 +13,10 @@ import java.util.Map;
 /**
  * Created by Asha on 4/13/2017.
  */
-@Document(indexName = "Leader", type = "leader")
+@Document(indexName = "leader", type = "leader")
 @Data
 @NoArgsConstructor
-public class LeadersDTO {
+public class LeaderDTO {
 
     @Id
     private Long id;

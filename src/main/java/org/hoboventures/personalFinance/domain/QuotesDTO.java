@@ -1,6 +1,5 @@
 package org.hoboventures.personalFinance.domain;
 
-import com.barchart.ondemand.api.responses.Quote;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -17,7 +16,7 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @Document(indexName = "quote", type = "quote")
-public class QuotesDTO extends Quote {
+public class QuotesDTO {
 
     @Id
     private String id;

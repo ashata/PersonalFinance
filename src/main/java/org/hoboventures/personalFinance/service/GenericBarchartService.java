@@ -18,24 +18,10 @@ import java.util.List;
  */
 public interface GenericBarchartService {
 
-    BarchartOnDemandClient getOnDemandClient();
-    EnvironmentUtil getEnvironmentUtil();
-
-    default String[] getPortfolioSymbols() {
-        String portfolioSymbols = "";
-        for (FundTypes fundType : FundTypes.values()) {
-            String fundValue = StringUtils.isBlank(portfolioSymbols) ? getEnvironmentUtil().getValue(fundType.name()) : "," + getEnvironmentUtil().getValue(fundType.name());
-            portfolioSymbols = portfolioSymbols + fundValue;
-
-        }
-        String[] fundTypeSymbols = StringUtils.split(portfolioSymbols, ",");
-        return fundTypeSymbols;
-    }
-
-    default <T extends ResponseBase> T getResponse(OnDemandRequest request, Class<T> type) throws Exception {
+    default <T extends ResponseBase> T getResponse(BarchartOnDemandClient onDemandClient, OnDemandRequest request, Class<T> type) throws Exception {
         T requestObject = null;
         if(ResponseBase.class.isAssignableFrom(type)) {
-            requestObject = (T) getOnDemandClient().fetch(request);
+            requestObject = (T) onDemandClient.fetch(request);
         }
         return requestObject;
     }

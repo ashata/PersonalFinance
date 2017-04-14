@@ -45,7 +45,7 @@ public class HistoryServiceImpl implements HistoryService {
                 .volume(HistoryRequest.HistoryRequestVolume.TOTAL).splits(true).start(DateTime.parse("2013-01-01")).build();
         History history = new History();
         try {
-            history = getResponse(historyRequest, History.class);
+            history = getResponse(onDemandClient, historyRequest, History.class);
             int count = 0;
             for (HistoryBar historyBar : history.all()) {
                 logger.debug(count + " " + historyBar.toString());
@@ -70,10 +70,10 @@ public class HistoryServiceImpl implements HistoryService {
                 final OnDemandRequest historyRequest = new HistoryRequest.Builder().symbol(symbol.toUpperCase()).dividends(true).type(historyRequestType)
                         .volume(HistoryRequest.HistoryRequestVolume.TOTAL).splits(true).start(DateTime.parse("2000-01-01")).build();
                 try {
-                    History history = getResponse(historyRequest, History.class);
+                    History history = getResponse(onDemandClient,historyRequest, History.class);
                     int count = 0;
                     for (HistoryBar historyBar : history.all()) {
-                        logger.debug(count + " " + historyBar.toString());
+                        //logger.debug(count + " " + historyBar.toString());
 
                         elasticFlushHistory(historyBar);
 
@@ -93,15 +93,5 @@ public class HistoryServiceImpl implements HistoryService {
         HistoryDTO historyDTO = new HistoryDTO();
         BeanUtils.copyProperties(historyBar, historyDTO);
         historyRepository.save(historyDTO);
-    }
-
-    @Override
-    public BarchartOnDemandClient getOnDemandClient() {
-        return onDemandClient;
-    }
-
-    @Override
-    public EnvironmentUtil getEnvironmentUtil() {
-        return environmentUtil;
     }
 }

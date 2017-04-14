@@ -2,14 +2,14 @@ package org.hoboventures.personalFinance.config;
 
 import com.barchart.ondemand.BarchartOnDemandClient;
 import org.elasticsearch.client.node.NodeClient;
+import org.elasticsearch.cluster.ClusterName;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.NodeBuilder;
 import org.hoboventures.personalFinance.domain.HistoryDTO;
-import org.hoboventures.personalFinance.domain.LeadersDTO;
+import org.hoboventures.personalFinance.domain.LeaderDTO;
 import org.hoboventures.personalFinance.domain.QuotesDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
@@ -56,7 +56,9 @@ public class BarchartFinanceAppConfig {
 
     @Bean
     private static NodeClient getNodeClient() {
-        return (NodeClient) nodeBuilder().clusterName(UUID.randomUUID().toString()).local(true).node()
+        return (NodeClient) nodeBuilder().settings(Settings.builder()
+                .put(ClusterName.SETTING, UUID.randomUUID().toString())
+                .put("path.home", "C://Users/Asha/Apps/elasticsearch-5.2.1/bin")).local(true).node()
                 .client();
     }
 
@@ -68,7 +70,7 @@ public class BarchartFinanceAppConfig {
     public ElasticsearchTemplate elasticsearchTemplate() {
         ElasticsearchTemplate elasticsearchTemplate = new ElasticsearchTemplate(getNodeClient());
         elasticsearchTemplate.createIndex(HistoryDTO.class);
-        elasticsearchTemplate.createIndex(LeadersDTO.class);
+        elasticsearchTemplate.createIndex(LeaderDTO.class);
         elasticsearchTemplate.createIndex(QuotesDTO.class);
         return elasticsearchTemplate;
     }

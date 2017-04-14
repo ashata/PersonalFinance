@@ -1,6 +1,5 @@
 package org.hoboventures.personalFinance.domain;
 
-import com.barchart.ondemand.api.responses.HistoryBar;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -17,7 +16,7 @@ import java.util.Map;
 @Document(indexName = "history", type = "history")
 @Data
 @NoArgsConstructor
-public class HistoryDTO extends HistoryBar {
+public class HistoryDTO {
 
     @Id
     private Long id;

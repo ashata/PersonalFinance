@@ -17,13 +17,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
 /**
  * Created by Asha on 2/15/2017.
  */
-@Component
+@Service
 public class QuoteServiceImpl implements QuoteService {
 
     private static final Logger logger = LoggerFactory.getLogger(QuoteServiceImpl.class);
@@ -31,6 +32,7 @@ public class QuoteServiceImpl implements QuoteService {
     @Qualifier("customAPIKey")
     @Autowired private BarchartOnDemandClient onDemandClient;
     @Autowired private EnvironmentUtil environmentUtil;
+
     @Autowired private QuoteRepository quoteRepository;
 
     @Override
@@ -47,14 +49,14 @@ public class QuoteServiceImpl implements QuoteService {
         QuoteRequest.QuoteRequestField[] fields = QuoteRequest.QuoteRequestField.values();
         OnDemandRequest quoteRequest = new QuoteRequest.Builder().symbols(symbols).mode(quoteMode).fields(fields).build();
         try {
-            quotes = getResponse(quoteRequest, Quotes.class);
-            int count = 0;
+            quotes = getResponse(onDemandClient, quoteRequest, Quotes.class);
+            //int count = 0;
             for (Quote quote : quotes.all()) {
-                logger.debug(count + " " + quote.toString());
+                //logger.debug(count + " " + quote.toString());
 
                 elasticFlushQuote(quote);
 
-                count++;
+                //count++;
             }
         } catch (Exception e) {
             logger.error("Exception fetching quote for symvbol(s): " + Arrays.toString(symbols), e);
@@ -68,13 +70,14 @@ public class QuoteServiceImpl implements QuoteService {
         quoteRepository.save(quotesDTO);
     }
 
-    @Override
-    public BarchartOnDemandClient getOnDemandClient() {
-        return onDemandClient;
-    }
+    private String[] getPortfolioSymbols() {
+        String portfolioSymbols = "";
+        for (FundTypes fundType : FundTypes.values()) {
+            String fundValue = StringUtils.isBlank(portfolioSymbols) ? environmentUtil.getValue(fundType.name()) : "," + environmentUtil.getValue(fundType.name());
+            portfolioSymbols = portfolioSymbols + fundValue;
 
-    @Override
-    public EnvironmentUtil getEnvironmentUtil() {
-        return environmentUtil;
+        }
+        String[] fundTypeSymbols = StringUtils.split(portfolioSymbols, ",");
+        return fundTypeSymbols;
     }
 }
