@@ -1,17 +1,26 @@
 package org.hoboventures.personalFinance.config;
 
 import com.barchart.ondemand.BarchartOnDemandClient;
+import org.elasticsearch.client.node.NodeClient;
+import org.elasticsearch.cluster.ClusterName;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.node.NodeBuilder;
+import org.hoboventures.personalFinance.domain.HistoryDTO;
+import org.hoboventures.personalFinance.domain.LeaderDTO;
+import org.hoboventures.personalFinance.domain.QuotesDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+
+import java.util.UUID;
 
 /**
  * Created by Asha on 12/2/2016.
@@ -44,4 +53,26 @@ public class BarchartFinanceAppConfig {
                 .paths(PathSelectors.any())
                 .build();
     }
+
+    @Bean
+    private static NodeClient getNodeClient() {
+        return (NodeClient) nodeBuilder().settings(Settings.builder()
+                .put(ClusterName.SETTING, UUID.randomUUID().toString())
+                .put("path.home", "C://Users/Asha/Apps/elasticsearch-5.2.1/bin")).local(true).node()
+                .client();
+    }
+
+    private static NodeBuilder nodeBuilder() {
+        return new NodeBuilder();
+    }
+
+    @Bean
+    public ElasticsearchTemplate elasticsearchTemplate() {
+        ElasticsearchTemplate elasticsearchTemplate = new ElasticsearchTemplate(getNodeClient());
+        elasticsearchTemplate.createIndex(HistoryDTO.class);
+        elasticsearchTemplate.createIndex(LeaderDTO.class);
+        elasticsearchTemplate.createIndex(QuotesDTO.class);
+        return elasticsearchTemplate;
+    }
+
 }

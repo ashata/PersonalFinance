@@ -101,12 +101,22 @@
             <artifactId>okhttp</artifactId>
             <version>2.7.5</version>
         </dependency>
+        <!--Elastic search-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
 
         <!---->
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.6</version>
         </dependency>
 
 
@@ -126,10 +136,18 @@
                     </execution>
                 </executions>
             </plugin>
-           <!-- <plugin>
-                <artifactId>maven-dependency-plugin</artifactId>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-            </plugin>-->
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <!-- <plugin>
+                 <artifactId>maven-dependency-plugin</artifactId>
+                 <groupId>org.apache.maven.plugins</groupId>
+             </plugin>-->
         </plugins>
         <!--<pluginManagement>
             <plugins>
