@@ -10,6 +10,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -22,7 +23,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableScheduling
 //@EnableTransactionManagement
 //@EntityScan("org.hoboventures.org.hoboventures.personalFinance.domain")
-//@EnableJpaRepositories("org.hoboventures.org.hoboventures.personalFinance.dao")
+@EnableElasticsearchRepositories("org.hoboventures.org.hoboventures.personalFinance.dao")
 @ComponentScan({"org.hoboventures.personalFinance"})
 @EnableMetrics
 @EnableSwagger2
